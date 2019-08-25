@@ -10,6 +10,12 @@
 
 [BootStrap Quick Start](https://v3.bootcss.com/getting-started/)
 
+[Sign With Github](https://developer.github.com/apps/building-oauth-apps/)
+
+[mybatis-spring-boot-autoconfigure](http://www.mybatis.org/spring-boot-starter/mybatis-spring-boot-autoconfigure/)
+
+[docs.spring.io](https://docs.spring.io/spring-boot/docs/2.0.0.RC1/reference/htmlsingle/)
+
 ### 参考页面
 
 [elasticsearch.cn](https://elasticsearch.cn/)
