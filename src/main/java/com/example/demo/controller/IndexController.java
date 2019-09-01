@@ -1,34 +1,27 @@
 package com.example.demo.controller;
 
-import com.example.demo.mapper.UserMapper;
-import com.example.demo.model.User;
+import com.example.demo.Service.QuestionService;
+import com.example.demo.dto.PaginationDTO;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.annotation.Resource;
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
 
 @Controller
 public class IndexController {
 
     @Resource
-    private UserMapper userMapper;
+    private QuestionService questionService;
 
     @GetMapping("/index")
-    public String hello(HttpServletRequest request) {
-        // 访问首页，查看是否有名为token的cookie,同时去数据库查询是否有token对应的用户 ,查到则将user写到session中
-        Cookie[] cookies = request.getCookies();
-        for (Cookie cookie : cookies) {
-            if ("token".equals(cookie.getName())) {
-                String token = cookie.getValue();
-                User user = userMapper.findByToken(token);
-                if (user != null) {
-                    request.getSession().setAttribute("user", user);
-                }
-                break;
-            }
-        }
+    public String hello(@RequestParam(name = "page", defaultValue = "1", required = false) Integer page,
+                        @RequestParam(name = "size", defaultValue = "5", required = false) Integer size,
+                        Model model) {
+        // 查询问题列表
+        PaginationDTO pagination = questionService.list(page, size);
+        model.addAttribute("pagination", pagination);
         return "index";
     }
 }

@@ -14,7 +14,15 @@
 
 [mybatis-spring-boot-autoconfigure](http://www.mybatis.org/spring-boot-starter/mybatis-spring-boot-autoconfigure/)
 
-[docs.spring.io](https://docs.spring.io/spring-boot/docs/2.0.0.RC1/reference/htmlsingle/)
+[lombok](https://projectlombok.org)
+
+[thymeleaf-doc](https://www.thymeleaf.org/doc/tutorials/3.0/usingthymeleaf.html)
+
+[springboot docs](https://docs.spring.io/spring-boot/docs/2.0.0.RC1/reference/htmlsingle/)
+
+[spring docs](https://docs.spring.io/spring/docs/5.0.4.RELEASE/spring-framework-reference/web.html)
+
+[mybatis generator](http://www.mybatis.org/generator)
 
 ### 参考页面
 

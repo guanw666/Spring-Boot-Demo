@@ -1,0 +1,35 @@
+body {
+    background-color: #e6e6e6;
+}
+
+.main {
+    margin: 50px;
+    background-color: #fff;
+}
+
+.btn-publish {
+    margin-bottom: 10px;
+}
+
+.avatar-img {
+    width: 40px;
+    height: 40px;
+}
+
+.profile-left-list {
+    margin-top: 20px;
+}
+
+.question-info {
+    color: #999;
+}
+
+.question-edit {
+    cursor: pointer;
+    color: #155faa;
+}
+
+.error-main {
+    margin: 0 200px 0 200px;
+    padding: 50px;
+}

@@ -1,13 +1,14 @@
 package com.example.demo.controller;
 
+import com.example.demo.Service.UserService;
 import com.example.demo.dto.AccessTokenDTO;
 import com.example.demo.dto.GitHubUser;
-import com.example.demo.mapper.UserMapper;
 import com.example.demo.model.User;
 import com.example.demo.provider.GitHubProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -36,13 +37,8 @@ public class AuthorizeController {
         this.gitHubProvider = gitHubProvider;
     }
 
-    private UserMapper userMapper;
-
     @Resource
-    public void setUserMapper(UserMapper userMapper) {
-        this.userMapper = userMapper;
-    }
-
+    private UserService userService;
 
     @RequestMapping("/callback")
     public String callback(@RequestParam(name = "code") String code,
@@ -60,17 +56,27 @@ public class AuthorizeController {
             // 授权成功
             User user = new User();
             user.setName(gitHubUser.getName());
-            user.setAccountId(gitHubUser.getId());
+            user.setAccountId(String.valueOf(gitHubUser.getId()));
             user.setToken(UUID.randomUUID().toString());
-            user.setGmtCreate(System.currentTimeMillis());
-            user.setGmtModified(user.getGmtCreate());
+            user.setBio(gitHubUser.getBio());
+            user.setAvatarUrl(gitHubUser.getAvatarUrl());
             // 保存登录状态
-            userMapper.insert(user);
+            userService.createOrUpdate(user);
             // 写cookie
             Cookie cookie = new Cookie("token", user.getToken());
             response.addCookie(cookie);
             return "redirect:index";
         }
+        return "redirect:index";
+    }
+
+    @GetMapping("/logout")
+    public String logout(HttpServletRequest request,
+                         HttpServletResponse response) {
+        request.getSession().removeAttribute("user");
+        Cookie cookie = new Cookie("token", null);
+        cookie.setMaxAge(0);
+        response.addCookie(cookie);
         return "redirect:index";
     }
 }

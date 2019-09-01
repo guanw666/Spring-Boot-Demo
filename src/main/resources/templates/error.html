@@ -1,0 +1,22 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>问答社区</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <link rel="stylesheet" href="../static/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../static/bootstrap/css/bootstrap-theme.min.css">
+    <script src="../static/jquery/jquery-1.12.4.min.js"></script>
+    <script src="../static/bootstrap/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="../static/common/demo.css">
+
+</head>
+<body>
+<!--导航栏-->
+<div th:replace="~{navigation :: nav}"></div>
+<div class="jumbotron error-main">
+    <h1>Sorry !</h1>
+    <p th:text="${message}"></p>
+    <p><a class="btn btn-primary btn-lg" href="/index" role="button">回到首页</a></p>
+</div>
+</body>
+</html>
