@@ -1,9 +1,11 @@
 package com.example.demo.controller;
 
 import com.example.demo.dto.CommentDTO;
-import com.example.demo.mapper.CommentMapper;
+import com.example.demo.dto.ResultDTO;
+import com.example.demo.exception.CustomizeErrorCode;
 import com.example.demo.model.Comment;
 import com.example.demo.model.User;
+import com.example.demo.service.CommentService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,7 +21,7 @@ import java.util.Map;
 public class CommentController {
 
     @Resource
-    private CommentMapper commentMapper;
+    private CommentService commentService;
 
     @RequestMapping(value = "/comment", method = RequestMethod.POST)
     @ResponseBody
@@ -27,22 +29,21 @@ public class CommentController {
                        HttpServletRequest request) {
 
         User user = (User) request.getSession().getAttribute("user");
+        if (user == null) {
+            return ResultDTO.errorOf(CustomizeErrorCode.NO_LOGIN);
+        }
 
         Comment comment = new Comment();
-        comment.setId(commentDTO.getId());
         comment.setParentId(commentDTO.getParentId());
-        comment.setType(1);
+        comment.setType(commentDTO.getType());
         comment.setComment(commentDTO.getComment());
         comment.setCommentator(user.getId());
-        comment.setCommentator(1L);
         comment.setGmtCreate(System.currentTimeMillis());
         comment.setGmtModified(comment.getGmtCreate());
 
-        commentMapper.insertSelective(comment);
 
-        Map<Object, Object> objectObjectMap = new HashMap<>();
-        objectObjectMap.put("message", "成功");
+        commentService.insert(comment);
 
-        return objectObjectMap;
+        return ResultDTO.okOf();
     }
 }
