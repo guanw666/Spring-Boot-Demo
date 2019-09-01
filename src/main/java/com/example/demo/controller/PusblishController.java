@@ -1,6 +1,6 @@
 package com.example.demo.controller;
 
-import com.example.demo.Service.QuestionService;
+import com.example.demo.service.QuestionService;
 import com.example.demo.dto.QuestionDTO;
 import com.example.demo.model.Question;
 import com.example.demo.model.User;

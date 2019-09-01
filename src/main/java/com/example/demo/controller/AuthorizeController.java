@@ -1,6 +1,6 @@
 package com.example.demo.controller;
 
-import com.example.demo.Service.UserService;
+import com.example.demo.service.UserService;
 import com.example.demo.dto.AccessTokenDTO;
 import com.example.demo.dto.GitHubUser;
 import com.example.demo.model.User;

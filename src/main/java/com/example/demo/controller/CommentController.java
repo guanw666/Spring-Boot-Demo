@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import java.util.HashMap;
+import java.util.Map;
 
 @Controller
 public class CommentController {
@@ -24,20 +26,23 @@ public class CommentController {
     public Object post(@RequestBody CommentDTO commentDTO,
                        HttpServletRequest request) {
 
-        //User user = (User) request.getSession().getAttribute("user");
+        User user = (User) request.getSession().getAttribute("user");
 
         Comment comment = new Comment();
         comment.setId(commentDTO.getId());
         comment.setParentId(commentDTO.getParentId());
         comment.setType(1);
         comment.setComment(commentDTO.getComment());
-        //comment.setCommentor(user.getId());
+        comment.setCommentator(user.getId());
         comment.setCommentator(1L);
         comment.setGmtCreate(System.currentTimeMillis());
         comment.setGmtModified(comment.getGmtCreate());
 
         commentMapper.insertSelective(comment);
 
-        return null;
+        Map<Object, Object> objectObjectMap = new HashMap<>();
+        objectObjectMap.put("message", "成功");
+
+        return objectObjectMap;
     }
 }

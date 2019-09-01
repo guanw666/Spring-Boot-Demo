@@ -1,6 +1,6 @@
 package com.example.demo.controller;
 
-import com.example.demo.Service.QuestionService;
+import com.example.demo.service.QuestionService;
 import com.example.demo.dto.QuestionDTO;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
