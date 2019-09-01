@@ -16,6 +16,20 @@ body {
     height: 40px;
 }
 
+.avatar-img-user {
+    padding-left: 55px;
+    padding-top: 12px;
+}
+
+.comment-user-div {
+    padding: 0;
+    margin-bottom: 15px;
+}
+
+.comment-btn {
+    margin: 10px 0;
+}
+
 .profile-left-list {
     margin-top: 20px;
 }
@@ -27,6 +41,7 @@ body {
 .question-edit {
     cursor: pointer;
     color: #155faa;
+    text-decoration: none;
 }
 
 .error-main {
