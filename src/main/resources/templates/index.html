@@ -8,7 +8,15 @@
     <script src="../static/jquery/jquery-1.12.4.min.js"></script>
     <script src="../static/bootstrap/js/bootstrap.min.js"></script>
     <link rel="stylesheet" href="../static/common/css/demo.css">
-
+    <script type="application/javascript">
+        window.onload = function () {
+            var closable = localStorage.getItem("closable");
+            if (closable === "true") {
+                window.close();
+                localStorage.removeItem("closable");
+            }
+        };
+    </script>
 </head>
 <body>
 <!--导航栏-->
