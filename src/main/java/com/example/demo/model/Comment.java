@@ -13,6 +13,8 @@ public class Comment {
 
     private Long likeCount;
 
+    private Long commentCount;
+
     private Long gmtCreate;
 
     private Long gmtModified;
@@ -63,6 +65,14 @@ public class Comment {
 
     public void setLikeCount(Long likeCount) {
         this.likeCount = likeCount;
+    }
+
+    public Long getCommentCount() {
+        return commentCount;
+    }
+
+    public void setCommentCount(Long commentCount) {
+        this.commentCount = commentCount;
     }
 
     public Long getGmtCreate() {

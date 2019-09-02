@@ -9,6 +9,7 @@
     <script src="../static/bootstrap/js/bootstrap.min.js"></script>
     <link rel="stylesheet" href="../static/common/css/demo.css">
     <script src="../static/common/js/demo.js"></script>
+    <script src="../static/common/js/moment.min.js"></script>
 
 </head>
 <body>
@@ -49,10 +50,52 @@
                         <div th:text="${comment.comment}"></div>
                         <div>
                             <span class="glyphicon glyphicon-thumbs-up like-icon"></span>
-                            <span class="glyphicon glyphicon-comment comment-icon"></span>
+                            <span class="glyphicon glyphicon-comment comment-icon"
+                                  th:data="${comment.id}" onclick="collapseComments(this)">
+                            </span>
+                            <span style="font-size: 15px;" th:text="${comment.commentCount}"></span>
+
                             <span class="pull-right"
                                   th:text="${#dates.format(comment.gmtCreate, 'yyyy-MM-dd HH:mm:ss')}"></span>
                         </div>
+                        <!--二级评论div-->
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 second-comment-div collapse"
+                             th:id="${'second-comment-div-'+comment.id}">
+                            <div>
+                                <!--append-->
+                            </div>
+                            <div>
+                                <input type="text" class="form-control" th:id="${'comment-id-'+comment.id}"
+                                       placeholder="评论一下...">
+                                <button type="button" class="btn btn-success pull-right" th:value="${comment.id}"
+                                        onclick="replyComment(this)">评论
+                                </button>
+                            </div>
+                            <!--<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">-->
+                            <!--<div class='media-left'>-->
+                            <!--<img class='media-object avatar-img'-->
+                            <!--src='https://avatars3.githubusercontent.com/u/42790590?v=4'>-->
+                            <!--</div>-->
+                            <!--<div class='media-body'>-->
+                            <!--<div>IT民工</div>-->
+                            <!--<div>回复评论</div>-->
+                            <!--<div><span class='pull-right'>1567431691543</span></div>-->
+                            <!--</div>-->
+                            <!--</div>-->
+                            <!--<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">-->
+                            <!--<div class='media-left'>-->
+                            <!--<img class='media-object avatar-img'-->
+                            <!--src='https://avatars3.githubusercontent.com/u/42790590?v=4'>-->
+                            <!--</div>-->
+                            <!--<div class='media-body'>-->
+                            <!--<div>IT民工</div>-->
+                            <!--<div>回复评论</div>-->
+                            <!--<div><span class='pull-right'>1567431691543</span></div>-->
+                            <!--</div>-->
+                            <!--</div>-->
+                        </div>
+
+                        <!--二级评论div-->
                     </div>
                 </div>
             </div>
@@ -67,7 +110,8 @@
                     <div class="avatar-img-user" th:text="${session.user.name}"></div>
                 </div>
                 <textarea id="comment" class="form-control" rows="5"></textarea>
-                <button type="button" class="btn btn-primary pull-right comment-btn" onclick="doComment()">回复</button>
+                <button type="button" class="btn btn-primary pull-right comment-btn" onclick="replyQuestion()">回复
+                </button>
             </div>
             <!--评论end-->
         </div>

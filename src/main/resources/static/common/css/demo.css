@@ -68,3 +68,13 @@ body {
     color: #499ef3;
     cursor: pointer;
 }
+
+.comment-icon-active{
+    color: #499ef3;
+}
+
+.second-comment-div {
+    margin: 10px 0;
+    padding: 10px 0;
+    border: 1px solid #e6e6e6;
+}

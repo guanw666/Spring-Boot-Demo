@@ -5,14 +5,12 @@ import com.example.demo.dto.QuestionDTO;
 import com.example.demo.enums.CommentTypeEnum;
 import com.example.demo.exception.CustomizeErrorCode;
 import com.example.demo.exception.CustomizeException;
-import com.example.demo.mapper.CommentMapper;
-import com.example.demo.mapper.QuestionExtMapper;
-import com.example.demo.mapper.QuestionMapper;
-import com.example.demo.mapper.UserMapper;
+import com.example.demo.mapper.*;
 import com.example.demo.model.*;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
@@ -27,6 +25,9 @@ public class CommentService {
 
     @Resource
     private CommentMapper commentMapper;
+
+    @Resource
+    private CommentExtMapper commentExtMapper;
 
     @Resource
     private QuestionMapper questionMapper;
@@ -58,24 +59,31 @@ public class CommentService {
             question.setCommentCount(1L);
             questionExtMapper.incCommentCount(question);
         }
-        // 回复评论
+        // 回复评论,同时将评论数加一
         else {
             Comment dbComment = commentMapper.selectByPrimaryKey(comment.getParentId());
             if (dbComment == null) {
                 throw new CustomizeException(CustomizeErrorCode.COMMENT_NOT_FOUND);
             }
             commentMapper.insertSelective(comment);
+            Comment incComment = new Comment();
+            incComment.setId(dbComment.getId());
+            incComment.setCommentCount(1L);
+            commentExtMapper.incCommentCount(incComment);
         }
     }
 
-    public List<CommentDTO> listByQuestionId(Long id) {
+    public List<CommentDTO> listByTargetId(Long id, CommentTypeEnum commentTypeEnum) {
         CommentExample commentExample = new CommentExample();
         commentExample.createCriteria()
                 .andParentIdEqualTo(id)
-                .andTypeEqualTo(CommentTypeEnum.QUESTION.getType());
+                .andTypeEqualTo(commentTypeEnum.getType());
         commentExample.setOrderByClause("gmt_create desc");
         // 问题评论列表
         List<Comment> commentList = commentMapper.selectByExample(commentExample);
+        if (commentList == null || commentList.size() == 0) {
+            return new ArrayList<>(0);
+        }
         // 问题评论列表中所有不重复的评论人id
         List<Long> userIds = commentList.stream().map(Comment::getCommentator).distinct().collect(Collectors.toList());
         // userList
@@ -83,7 +91,7 @@ public class CommentService {
         userExample.createCriteria()
                 .andIdIn(userIds);
         List<User> userList = userMapper.selectByExample(userExample);
-        // userId->user Map
+        // Map<userId,user>
         Map<Long, User> longUserMap = userList.stream().collect(Collectors.toMap(User::getId, user -> user));
         return commentList.stream().map(comment -> {
             CommentDTO commentDTO = new CommentDTO();

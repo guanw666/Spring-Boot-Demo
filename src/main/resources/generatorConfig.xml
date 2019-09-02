@@ -12,6 +12,9 @@
         <!--分页插件-->
         <plugin type="org.mybatis.generator.plugins.RowBoundsPlugin"/>
 
+        <!--覆盖mapper.xml-->
+        <plugin type="org.mybatis.generator.plugins.UnmergeableXmlMappersPlugin" />
+
         <!--注释设置-->
         <commentGenerator>
             <property name="suppressAllComments" value="true"/>
