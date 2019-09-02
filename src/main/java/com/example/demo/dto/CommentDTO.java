@@ -1,5 +1,6 @@
 package com.example.demo.dto;
 
+import com.example.demo.model.User;
 import lombok.Data;
 
 @Data
@@ -19,4 +20,6 @@ public class CommentDTO {
     private Long gmtCreate;
 
     private Long gmtModified;
+
+    private User user;
 }

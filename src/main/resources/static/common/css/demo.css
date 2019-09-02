@@ -48,3 +48,23 @@ body {
     margin: 0 200px 0 200px;
     padding: 50px;
 }
+
+.like-icon {
+    color: #666;
+}
+
+.comment-icon {
+    padding-left: 10px;
+    color: #666;
+}
+
+.comment-list {
+    border-bottom: 1px solid #e6e6e6;
+    padding-bottom: 5px;
+    margin-bottom: 5px;
+}
+
+.like-icon:hover, .comment-icon:hover {
+    color: #499ef3;
+    cursor: pointer;
+}

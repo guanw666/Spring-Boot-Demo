@@ -1,17 +1,26 @@
 package com.example.demo.service;
 
+import com.example.demo.dto.CommentDTO;
+import com.example.demo.dto.QuestionDTO;
 import com.example.demo.enums.CommentTypeEnum;
 import com.example.demo.exception.CustomizeErrorCode;
 import com.example.demo.exception.CustomizeException;
 import com.example.demo.mapper.CommentMapper;
 import com.example.demo.mapper.QuestionExtMapper;
 import com.example.demo.mapper.QuestionMapper;
-import com.example.demo.model.Comment;
-import com.example.demo.model.Question;
+import com.example.demo.mapper.UserMapper;
+import com.example.demo.model.*;
+import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 @Service
 public class CommentService {
@@ -24,6 +33,9 @@ public class CommentService {
 
     @Resource
     private QuestionExtMapper questionExtMapper;
+
+    @Resource
+    private UserMapper userMapper;
 
     @Transactional
     public void insert(Comment comment) {
@@ -54,5 +66,30 @@ public class CommentService {
             }
             commentMapper.insertSelective(comment);
         }
+    }
+
+    public List<CommentDTO> listByQuestionId(Long id) {
+        CommentExample commentExample = new CommentExample();
+        commentExample.createCriteria()
+                .andParentIdEqualTo(id)
+                .andTypeEqualTo(CommentTypeEnum.QUESTION.getType());
+        commentExample.setOrderByClause("gmt_create desc");
+        // 问题评论列表
+        List<Comment> commentList = commentMapper.selectByExample(commentExample);
+        // 问题评论列表中所有不重复的评论人id
+        List<Long> userIds = commentList.stream().map(Comment::getCommentator).distinct().collect(Collectors.toList());
+        // userList
+        UserExample userExample = new UserExample();
+        userExample.createCriteria()
+                .andIdIn(userIds);
+        List<User> userList = userMapper.selectByExample(userExample);
+        // userId->user Map
+        Map<Long, User> longUserMap = userList.stream().collect(Collectors.toMap(User::getId, user -> user));
+        return commentList.stream().map(comment -> {
+            CommentDTO commentDTO = new CommentDTO();
+            BeanUtils.copyProperties(comment, commentDTO);
+            commentDTO.setUser(longUserMap.get(commentDTO.getCommentator()));
+            return commentDTO;
+        }).collect(Collectors.toList());
     }
 }
