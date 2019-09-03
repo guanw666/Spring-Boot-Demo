@@ -3,6 +3,7 @@ package com.example.demo.controller;
 import com.example.demo.dto.CommentDTO;
 import com.example.demo.dto.QuestionDTO;
 import com.example.demo.enums.CommentTypeEnum;
+import com.example.demo.model.Question;
 import com.example.demo.service.CommentService;
 import com.example.demo.service.QuestionService;
 import org.springframework.stereotype.Controller;
@@ -28,8 +29,10 @@ public class QuestionController {
         QuestionDTO questionDTO = questionService.getById(id);
         questionService.incView(id);
         List<CommentDTO> comments = commentService.listByTargetId(id, CommentTypeEnum.QUESTION);
+        List<QuestionDTO> relationQuestions = questionService.selectRelated(questionDTO);
         model.addAttribute("question", questionDTO);
         model.addAttribute("comments", comments);
+        model.addAttribute("relationQuestions", relationQuestions);
         return "question";
     }
 }

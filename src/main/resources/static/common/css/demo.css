@@ -44,6 +44,21 @@ body {
     text-decoration: none;
 }
 
+.question-tag {
+    margin-left: 10px;
+    font-size: 15px;
+}
+
+.question-relation a {
+    cursor: pointer;
+    color: #155faa;
+    text-decoration: none;
+}
+
+.question-left-img img {
+    width: 100%;
+}
+
 .error-main {
     margin: 0 200px 0 200px;
     padding: 50px;
@@ -69,7 +84,7 @@ body {
     cursor: pointer;
 }
 
-.comment-icon-active{
+.comment-icon-active {
     color: #499ef3;
 }
 
