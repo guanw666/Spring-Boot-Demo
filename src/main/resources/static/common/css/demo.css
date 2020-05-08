@@ -46,7 +46,7 @@ body {
 
 .question-tag {
     margin-left: 10px;
-    font-size: 15px;
+    font-size: 13px;
 }
 
 .question-relation a {
@@ -92,4 +92,9 @@ body {
     margin: 10px 0;
     padding: 10px 0;
     border: 1px solid #e6e6e6;
+}
+
+#publish-tag-tab {
+    display: none;
+    margin-top: 10px;
 }

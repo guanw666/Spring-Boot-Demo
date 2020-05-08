@@ -1,9 +1,11 @@
 package com.example.demo.controller;
 
+import com.example.demo.cache.TagCache;
 import com.example.demo.service.QuestionService;
 import com.example.demo.dto.QuestionDTO;
 import com.example.demo.model.Question;
 import com.example.demo.model.User;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,7 +23,8 @@ public class PusblishController {
     private QuestionService questionService;
 
     @GetMapping("/publish")
-    public String pusblish() {
+    public String pusblish(Model model) {
+        model.addAttribute("tags", TagCache.get());
         return "publish";
     }
 
@@ -36,6 +39,7 @@ public class PusblishController {
         model.addAttribute("title", title);
         model.addAttribute("description", description);
         model.addAttribute("tag", tag);
+        model.addAttribute("tags", TagCache.get());
         // 判断是否登录
         User user = (User) request.getSession().getAttribute("user");
 
@@ -54,6 +58,11 @@ public class PusblishController {
         }
         if (tag == null || "".equals(tag)) {
             model.addAttribute("error", "标签为空！");
+            return "publish";
+        }
+        String invalidTags = TagCache.filterInvalidTag(tag);
+        if (StringUtils.isNotBlank(invalidTags)) {
+            model.addAttribute("error", "输入非法标签：" + invalidTags);
             return "publish";
         }
         // 保存问题
@@ -75,6 +84,7 @@ public class PusblishController {
         model.addAttribute("title", questionDTO.getTitle());
         model.addAttribute("description", questionDTO.getDescription());
         model.addAttribute("tag", questionDTO.getTag());
+        model.addAttribute("tags", TagCache.get());
         return "publish";
     }
 }

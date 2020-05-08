@@ -82,3 +82,21 @@ function collapseComments(e) {
         secondCommentDiv.addClass("collapse");
     }
 }
+
+function showSelectTag() {
+    var tabPanelEle = $('#publish-tag-tab');
+    tabPanelEle.show();
+}
+
+function selectTag(el) {
+    var value = el.getAttribute("data-tag");
+    var inputEle = $("#tag");
+    var previous = inputEle.val();
+    if (previous.split(",").indexOf(value) === -1) {
+        if (previous) {
+            inputEle.val(previous + "," + value);
+        } else {
+            inputEle.val(value);
+        }
+    }
+}
