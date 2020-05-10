@@ -40,13 +40,16 @@ body {
 
 .question-edit {
     cursor: pointer;
-    color: #155faa;
+    color: #999;
     text-decoration: none;
 }
 
 .question-tag {
-    margin-left: 10px;
     font-size: 13px;
+    display: inline-block;
+    white-space: normal;
+    margin-top: 5px;
+    margin-left: 5px;
 }
 
 .question-relation a {
@@ -96,5 +99,5 @@ body {
 
 #publish-tag-tab {
     display: none;
-    margin-top: 10px;
+    /*margin-top: 10px;*/
 }

@@ -39,21 +39,24 @@
                     >
                     <div id="publish-tag-tab">
                         <ul class="nav nav-tabs" role="tablist">
-                            <li role="presentation" th:each="tagDTO:${tags}">
+                            <li role="presentation"
+                                th:each="tagDTO,stat:${tags}"
+                                th:classappend="${stat.first?'active':''}">
                                 <a th:href="'#'+${tagDTO.categoryName}" aria-controls="home" role="tab"
                                    data-toggle="tab"
                                    th:text="${tagDTO.categoryName}"></a>
                             </li>
                         </ul>
                         <div class="tab-content">
-                            <div role="tabpanel" class="tab-pane" th:id="${tagDTO.categoryName}"
-                                 th:each="tagDTO:${tags}">
+                            <div role="tabpanel" class="tab-pane"
+                                 th:each="tagDTO,stat:${tags}"
+                                 th:id="${tagDTO.categoryName}"
+                                 th:classappend="${stat.first?'active':''}">
                                 <span class="label label-info question-tag"
                                       th:each="tag:${tagDTO.tags}"
                                       th:data-tag="${tag}"
                                       onclick="selectTag(this)">
-                                    <span class="glyphicon glyphicon-tags" aria-hidden="true"></span>
-                                    <span class="label label-info" th:text="${tag}"></span>
+                                    <span class="glyphicon glyphicon-tags"></span>&nbsp;&nbsp;[(${tag})]
                                 </span>
                             </div>
                         </div>

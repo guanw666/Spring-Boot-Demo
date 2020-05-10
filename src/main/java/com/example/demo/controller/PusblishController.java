@@ -23,7 +23,14 @@ public class PusblishController {
     private QuestionService questionService;
 
     @GetMapping("/publish")
-    public String pusblish(Model model) {
+    public String pusblish(HttpServletRequest request, Model model) {
+        // 判断是否登录
+        User user = (User) request.getSession().getAttribute("user");
+
+        if (user == null) {
+            model.addAttribute("error", "用户未登录！");
+            return "publish";
+        }
         model.addAttribute("tags", TagCache.get());
         return "publish";
     }
