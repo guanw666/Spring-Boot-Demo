@@ -9,7 +9,11 @@ public enum CustomizeErrorCode implements ICustomizeErrorCode {
     SYS_ERROR(2005, "服务器错误"),
     TYPE_PATAM_ERROR(2006, "类型参数错误"),
     COMMENT_NOT_FOUND(2007, "评论不存在"),
-    CONTENT_IS_BLANK(2008, "内容不能为空");
+    CONTENT_IS_BLANK(2008, "内容不能为空"),
+    READ_NOTIFICATION_FAIL(2009, "读通知失败"),
+    NOTIFICATION_NOT_FOUND(2010, "通知不存在"),
+
+    ;
     private Integer code;
 
     private String message;

@@ -47,7 +47,7 @@ public class QuestionService {
         }
         Integer totalPageNum = Math.toIntExact(questionMapper.countByExample(new QuestionExample()));
         // 组装分页对象
-        PaginationDTO paginationDTO = new PaginationDTO();
+        PaginationDTO<QuestionDTO> paginationDTO = new PaginationDTO<>();
         paginationDTO.setDatas(questionDTOList);
         paginationDTO.setPaginationDTO(totalPageNum, pageNum, pageSize);
 
@@ -55,7 +55,7 @@ public class QuestionService {
         return paginationDTO;
     }
 
-    public PaginationDTO list(Long userId, Integer pageNum, Integer pageSize) {
+    public PaginationDTO<QuestionDTO> list(Long userId, Integer pageNum, Integer pageSize) {
         Integer offset = (pageNum - 1) * pageSize;
         QuestionExample example = new QuestionExample();
         example.createCriteria()
@@ -78,7 +78,7 @@ public class QuestionService {
         Integer totalPageNum = Math.toIntExact(questionMapper.countByExample(example));
 
         // 组装分页对象
-        PaginationDTO paginationDTO = new PaginationDTO();
+        PaginationDTO<QuestionDTO> paginationDTO = new PaginationDTO<>();
         paginationDTO.setDatas(questionDTOList);
         paginationDTO.setPaginationDTO(totalPageNum, pageNum, pageSize);
 

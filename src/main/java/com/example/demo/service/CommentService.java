@@ -1,8 +1,9 @@
 package com.example.demo.service;
 
 import com.example.demo.dto.CommentDTO;
-import com.example.demo.dto.QuestionDTO;
 import com.example.demo.enums.CommentTypeEnum;
+import com.example.demo.enums.NotificationStatusEnum;
+import com.example.demo.enums.NotificationTypeEnum;
 import com.example.demo.exception.CustomizeErrorCode;
 import com.example.demo.exception.CustomizeException;
 import com.example.demo.mapper.*;
@@ -10,14 +11,11 @@ import com.example.demo.model.*;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 @Service
@@ -38,8 +36,11 @@ public class CommentService {
     @Resource
     private UserMapper userMapper;
 
+    @Resource
+    private NotificationMapper notificationMapper;
+
     @Transactional
-    public void insert(Comment comment) {
+    public void insert(Comment comment, User user) {
 
         if (comment.getParentId() == null || comment.getParentId() == 0) {
             throw new CustomizeException(CustomizeErrorCode.TARGET_PARAM_NOT_FOUND);
@@ -55,9 +56,14 @@ public class CommentService {
             if (question == null) {
                 throw new CustomizeException(CustomizeErrorCode.QUESTION_NOT_FOUND);
             }
+            // 插入评论
             commentMapper.insertSelective(comment);
+            // 问题评论数+1
             question.setCommentCount(1L);
             questionExtMapper.incCommentCount(question);
+            // 创建通知
+            createNotify(comment.getCommentator(), question.getCreator(), user.getName(), question.getTitle(),
+                    question.getId(), NotificationTypeEnum.REPLY_QUESTION);
         }
         // 回复评论,同时将评论数加一
         else {
@@ -65,12 +71,35 @@ public class CommentService {
             if (dbComment == null) {
                 throw new CustomizeException(CustomizeErrorCode.COMMENT_NOT_FOUND);
             }
+            Question question = questionMapper.selectByPrimaryKey(dbComment.getParentId());
+            if (question == null) {
+                throw new CustomizeException(CustomizeErrorCode.QUESTION_NOT_FOUND);
+            }
+            // 插入评论
             commentMapper.insertSelective(comment);
+            // 评论的评论数+1
             Comment incComment = new Comment();
             incComment.setId(dbComment.getId());
             incComment.setCommentCount(1L);
             commentExtMapper.incCommentCount(incComment);
+            // 创建通知
+            createNotify(comment.getCommentator(), dbComment.getCommentator(), user.getName(), question.getTitle(),
+                    question.getId(), NotificationTypeEnum.REPLY_COMMENT);
         }
+    }
+
+    private void createNotify(Long commentator, Long receiver, String notiferName, String outerTitle, Long outerId,
+                              NotificationTypeEnum notificationType) {
+        Notification notification = new Notification();
+        notification.setNotifer(commentator);
+        notification.setNotiferName(notiferName);
+        notification.setReceiver(receiver);
+        notification.setType(notificationType.getType());
+        notification.setOuterId(outerId);
+        notification.setOuterTitle(outerTitle);
+        notification.setGmtCreate(System.currentTimeMillis());
+        notification.setStatus(NotificationStatusEnum.UNREAD.getStatus());
+        notificationMapper.insert(notification);
     }
 
     public List<CommentDTO> listByTargetId(Long id, CommentTypeEnum commentTypeEnum) {

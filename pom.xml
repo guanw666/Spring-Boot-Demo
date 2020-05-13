@@ -109,6 +109,11 @@
                         </goals>
                     </execution>
                 </executions>
+                <configuration>
+                    <configurationFile>src/main/resources/generatorConfig.xml</configurationFile>
+                    <verbose>true</verbose>
+                    <overwrite>true</overwrite>
+                </configuration>
                 <dependencies>
                     <dependency>
                         <groupId>mysql</groupId>

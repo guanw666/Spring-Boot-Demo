@@ -1,5 +1,9 @@
 package com.example.demo.controller;
 
+import com.example.demo.dto.NotificationDTO;
+import com.example.demo.dto.QuestionDTO;
+import com.example.demo.model.Notification;
+import com.example.demo.service.NotificationService;
 import com.example.demo.service.QuestionService;
 import com.example.demo.dto.PaginationDTO;
 import com.example.demo.mapper.UserMapper;
@@ -17,10 +21,10 @@ import javax.servlet.http.HttpServletRequest;
 public class ProfileController {
 
     @Resource
-    private UserMapper userMapper;
+    private QuestionService questionService;
 
     @Resource
-    private QuestionService questionService;
+    private NotificationService notificationService;
 
     @GetMapping("/profile/{section}")
     public String profile(@PathVariable(name = "section") String section,
@@ -29,14 +33,22 @@ public class ProfileController {
                           @RequestParam(name = "size", defaultValue = "5") Integer size,
                           Model model) {
         User user = (User) request.getSession().getAttribute("user");
-        model.addAttribute("section", section);
+        if (user == null) {
+            return "redirect:/";
+        }
         if ("questions".equals(section)) {
+            model.addAttribute("section", "questions");
             model.addAttribute("sectionName", "我的提问");
             // 查询问题列表
-            PaginationDTO pagination = questionService.list(user.getId(), page, size);
+            PaginationDTO<QuestionDTO> pagination = questionService.list(user.getId(), page, size);
             model.addAttribute("pagination", pagination);
         } else if ("replies".equals(section)) {
+            model.addAttribute("section", "replies");
             model.addAttribute("sectionName", "最新回复");
+            PaginationDTO<NotificationDTO> pagination = notificationService.list(user.getId(), page, size);
+            model.addAttribute("pagination", pagination);
+            long unreadCount = notificationService.unreadCount(user.getId());
+            model.addAttribute("unreadCount", unreadCount);
         }
         return "profile";
     }

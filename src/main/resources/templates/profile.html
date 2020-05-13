@@ -18,14 +18,18 @@
         <div class="col-lg-9 col-md-9 col-sm-12 col-xs-12">
             <h2><span th:text="${sectionName}"></span></h2>
             <hr>
-            <div class="media" th:each="question:${pagination.datas}">
+            <div class="media"
+                 th:each="question:${pagination.datas}"
+                 th:if="${section.equals('questions')}">
                 <div class="media-left">
                     <a href="#">
                         <img class="media-object avatar-img" th:src="@{${question.user.avatarUrl}}" alt="...">
                     </a>
                 </div>
                 <div class="media-body">
-                    <h4 class="media-heading" th:text="${question.title}"></h4>
+                    <a th:href="@{'/question/'+${question.id}}">
+                        <h4 class="media-heading" th:text="${question.title}"></h4>
+                    </a>
                     <h5 th:text="${question.description}"></h5>
                     <span th:text="${question.user.name}"></span><span class="text-color-999"> 发起了问题 • </span>
                     <span th:text="${question.commentCount}"></span><span>个回复 •</span>
@@ -34,6 +38,22 @@
                     <a class="question-edit" th:href="'/publish/'+${question.id}">
                         <span class="glyphicon glyphicon-pencil"></span>编辑
                     </a>
+                </div>
+            </div>
+            <div class="media"
+                 th:each="notification:${pagination.datas}"
+                 th:if="${section.equals('replies')}">
+                <div class="media-body">
+                    <p class="media-heading">
+                        <a href="#">
+                            [(${notification.notiferName})]
+                        </a>
+                        <span class="text-color-999">[(${notification.typeName})]</span>
+                        <a th:href="@{'/notification/'+${notification.id}}">
+                            <span class="text-color-999">[(${notification.outerTitle})]</span>
+                        </a>
+                        <span class="label label-warning" th:if="${notification.status==0}">未读</span>
+                    </p>
                 </div>
             </div>
             <!--分页start-->
@@ -75,8 +95,12 @@
         <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
             <div class="list-group profile-left-list">
                 <a href="/profile/questions" class="list-group-item"
-                   th:classappend="${section=='questions'}?'active':''">我的提问</a>
-                <a href="/profile/replies" class="list-group-item" th:classappend="${section=='replies'}?'active':''">最新回复</a>
+                   th:classappend="${section=='questions'}?'active':''">[(${sectionName})]</a>
+                <a href="/profile/replies" class="list-group-item"
+                   th:classappend="${section=='replies'}?'active':''">[(${sectionName})]
+                    <span class="badge">[(${unreadCount})]</span>
+                </a>
+
             </div>
         </div>
     </div>
