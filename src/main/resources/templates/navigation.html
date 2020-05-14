@@ -24,7 +24,7 @@
                     </li>
                     <li th:if="${session.user!=null}">
                         <!--未读消息数量-->
-                        <a href="/profile/replies">Inbox <span class="badge">42</span></a>
+                        <a href="/profile/replies">通知 <span class="badge">[(${session.unreadCount})]</span></a>
                     </li>
                     <!--如果user为空，显示登录按钮-->
                     <li th:if="${session.user==null}">

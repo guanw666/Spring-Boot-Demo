@@ -1,13 +1,11 @@
 package com.example.demo.controller;
 
 import com.example.demo.dto.NotificationDTO;
+import com.example.demo.dto.PaginationDTO;
 import com.example.demo.dto.QuestionDTO;
-import com.example.demo.model.Notification;
+import com.example.demo.model.User;
 import com.example.demo.service.NotificationService;
 import com.example.demo.service.QuestionService;
-import com.example.demo.dto.PaginationDTO;
-import com.example.demo.mapper.UserMapper;
-import com.example.demo.model.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -47,8 +45,6 @@ public class ProfileController {
             model.addAttribute("sectionName", "最新回复");
             PaginationDTO<NotificationDTO> pagination = notificationService.list(user.getId(), page, size);
             model.addAttribute("pagination", pagination);
-            long unreadCount = notificationService.unreadCount(user.getId());
-            model.addAttribute("unreadCount", unreadCount);
         }
         return "profile";
     }
