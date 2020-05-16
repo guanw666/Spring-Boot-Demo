@@ -5,10 +5,13 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <link rel="stylesheet" href="../static/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="../static/bootstrap/css/bootstrap-theme.min.css">
+    <link rel="stylesheet" href="../static/editormd/css/editormd.min.css"/>
+    <link rel="stylesheet" href="../static/common/css/demo.css">
+
     <script src="../static/jquery/jquery-1.12.4.min.js"></script>
+    <script src="../static/editormd/js/editormd.min.js"></script>
     <script src="../static/bootstrap/js/bootstrap.min.js"></script>
     <script src="../static/common/js/demo.js"></script>
-    <link rel="stylesheet" href="../static/common/css/demo.css">
 
 </head>
 <body>
@@ -26,11 +29,25 @@
                     <input type="text" class="form-control" id="title" name="title" th:value="${title}"
                            placeholder="问题标题..." autocomplete="off">
                 </div>
-                <div class="form-group">
+                <div class="form-group" id="question-editormd">
                     <label for="description">问题补充(必填，请参考提示)：</label>
                     <textarea class="form-control" rows="5" th:text="${description}" id="description"
-                              name="description"></textarea>
+                              name="description">
+                    </textarea>
                 </div>
+                <script type="text/javascript">
+                    $(function () {
+                        var questionEditor = editormd("question-editormd", {
+                            width: "100%",
+                            height: 350,
+                            path: "../static/editormd/lib/",
+                            placeholder: "",
+                            imageUpload: true,
+                            imageFormats: ["jpg", "jpeg", "gif", "png", "bmp", "webp"],
+                            imageUploadURL: "/file/upload"
+                        });
+                    });
+                </script>
                 <div class="form-group">
                     <label for="tag">添加标签：</label>
                     <input type="text" class="form-control" id="tag" th:value="${tag}" name="tag"
@@ -69,15 +86,15 @@
             </form>
         </div>
         <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
-            <h2><span class="glyphicon glyphicon-info-sign" aria-hidden="true">问题发起指南</span></h2>
+            <h2><span class="glyphicon glyphicon-info-sign">问题发起指南</span></h2>
             <hr>
-            <span class="glyphicon glyphicon-asterisk" aria-hidden="true"></span>
+            <span class="glyphicon glyphicon-asterisk"></span>
             问题标题：请用精简的语言描述您发布的问题，不超过25字
             <br>
-            <span class="glyphicon glyphicon-asterisk" aria-hidden="true"></span>
+            <span class="glyphicon glyphicon-asterisk"></span>
             问题补充：详细不出您的问题内容，并确保问题描述清晰直观，并提供一些相关的资料
             <br>
-            <span class="glyphicon glyphicon-asterisk" aria-hidden="true"></span>
+            <span class="glyphicon glyphicon-asterisk"></span>
             选择标签：选择一个或多个合适的标签，用逗号隔开，每个标签不超过10个字
         </div>
     </div>

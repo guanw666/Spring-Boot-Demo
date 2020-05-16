@@ -17,7 +17,7 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
 @Controller
-public class PusblishController {
+public class PublishController {
 
     @Resource
     private QuestionService questionService;
