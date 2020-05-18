@@ -30,7 +30,7 @@
                     <a th:href="@{'/question/'+${question.id}}">
                         <h4 class="media-heading" th:text="${question.title}"></h4>
                     </a>
-                    <h5 th:text="${question.description}"></h5>
+                    <!--<h5 th:text="${question.description}"></h5>-->
                     <span th:text="${question.user.name}"></span><span class="text-color-999"> 发起了问题 • </span>
                     <span th:text="${question.commentCount}"></span><span>个回复 •</span>
                     <span th:text="${question.viewCount}"></span><span>次浏览 • </span>

@@ -90,6 +90,9 @@ public class CommentService {
 
     private void createNotify(Long commentator, Long receiver, String notiferName, String outerTitle, Long outerId,
                               NotificationTypeEnum notificationType) {
+        if (receiver.equals(commentator)) {
+            return;
+        }
         Notification notification = new Notification();
         notification.setNotifer(commentator);
         notification.setNotiferName(notiferName);

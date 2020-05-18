@@ -1,6 +1,8 @@
 package com.example.demo.controller;
 
 import com.example.demo.dto.FileDTO;
+import com.example.demo.exception.CustomizeErrorCode;
+import com.example.demo.exception.CustomizeException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -34,8 +36,10 @@ public class FileController {
             file.transferTo(destFile);
         } catch (IOException e) {
             e.printStackTrace();
+            throw new CustomizeException(CustomizeErrorCode.FILE_UPLOAD_FAIL);
         }
         String fileReadPath = "/photos/" + fileName;
+
         FileDTO fileDTO = new FileDTO();
         fileDTO.setSuccess(1);
         fileDTO.setMessage("上传成功");

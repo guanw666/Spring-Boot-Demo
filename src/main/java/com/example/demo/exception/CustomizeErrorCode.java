@@ -12,6 +12,7 @@ public enum CustomizeErrorCode implements ICustomizeErrorCode {
     CONTENT_IS_BLANK(2008, "内容不能为空"),
     READ_NOTIFICATION_FAIL(2009, "读通知失败"),
     NOTIFICATION_NOT_FOUND(2010, "通知不存在"),
+    FILE_UPLOAD_FAIL(2011, "图片上传失败"),
 
     ;
     private Integer code;
