@@ -1,5 +1,6 @@
 package com.example.demo.interceptor;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
@@ -13,6 +14,9 @@ import java.util.Arrays;
 //@EnableWebMvc
 public class WebConfig implements WebMvcConfigurer {
 
+    @Value("${file.upload.path}")
+    private String fileUploadPath;
+
     @Resource
     private SessionInterceptor sessionInterceptor;
 
@@ -20,10 +24,6 @@ public class WebConfig implements WebMvcConfigurer {
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(sessionInterceptor)
                 .addPathPatterns("/**");
-//        .excludePathPatterns(Arrays.asList("/bootstrap/**", "/common/**", "/image/**", "/jquery/**"));
-//        registry.addInterceptor(new LocaleInterceptor());
-//        registry.addInterceptor(new ThemeInterceptor()).addPathPatterns("/**").excludePathPatterns("/admin/**");
-//        registry.addInterceptor(new SecurityInterceptor()).addPathPatterns("/secure/*");
     }
 
     /**
@@ -31,7 +31,11 @@ public class WebConfig implements WebMvcConfigurer {
      */
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
+        // 静态资源处理
         registry.addResourceHandler("/static/**")
                 .addResourceLocations("classpath:/static/");
+        // 读文件处理
+        registry.addResourceHandler("/photos/**")
+                .addResourceLocations("file:" + fileUploadPath + "/");
     }
 }

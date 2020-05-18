@@ -1,32 +1,45 @@
 package com.example.demo.controller;
 
-import com.example.demo.dto.CommentDTO;
 import com.example.demo.dto.FileDTO;
-import com.example.demo.dto.QuestionDTO;
-import com.example.demo.enums.CommentTypeEnum;
-import com.example.demo.service.CommentService;
-import com.example.demo.service.QuestionService;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
-import javax.annotation.Resource;
-import java.util.List;
+import java.io.File;
+import java.io.IOException;
+import java.util.Objects;
+import java.util.UUID;
 
 @Controller
 public class FileController {
 
+    @Value("${file.upload.path}")
+    private String fileUploadPath;
+
     @PostMapping("/file/upload")
     @ResponseBody
-    public FileDTO upload() {
+    public FileDTO upload(@RequestParam("editormd-image-file") MultipartFile file) {
 
+        String[] split = Objects.requireNonNull(file.getOriginalFilename()).split("\\.");
+        String fileType = split[split.length - 1];
+        String fileName = UUID.randomUUID() + "." + fileType;
+        try {
+            File destFile = new File(fileUploadPath + fileName);
+            if (!destFile.getParentFile().exists()) {
+                destFile.getParentFile().mkdir();
+            }
+            file.transferTo(destFile);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        String fileReadPath = "/photos/" + fileName;
         FileDTO fileDTO = new FileDTO();
         fileDTO.setSuccess(1);
         fileDTO.setMessage("上传成功");
-        fileDTO.setUrl("/static/image/warmboiledfrog.jpg");
+        fileDTO.setUrl(fileReadPath);
         return fileDTO;
     }
 }

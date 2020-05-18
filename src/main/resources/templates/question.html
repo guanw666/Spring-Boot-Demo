@@ -103,8 +103,9 @@
                     回复该问题
                 </h3>
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 comment-user-div">
-                    <img class="media-object avatar-img pull-left" th:src="@{${session.user.avatarUrl}}">
-                    <div class="avatar-img-user" th:text="${session.user.name}"></div>
+                    <img class="media-object avatar-img pull-left"
+                         th:src="@{${session.user!=null ? session.user.avatarUrl : '/static/image/default_avatar.png'}}">
+                    <div class="avatar-img-user" th:text="${session.user!=null ? session.user.name : '匿名用户'}"></div>
                 </div>
                 <textarea id="comment" class="form-control" rows="5"></textarea>
                 <button type="button" class="btn btn-primary pull-right comment-btn" onclick="replyQuestion()">回复
