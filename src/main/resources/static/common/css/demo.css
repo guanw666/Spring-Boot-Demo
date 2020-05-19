@@ -101,3 +101,7 @@ body {
     display: none;
     /*margin-top: 10px;*/
 }
+
+.footer {
+    padding: 10px 25%;
+}

@@ -2,6 +2,7 @@ package com.example.demo.service;
 
 import com.example.demo.dto.PaginationDTO;
 import com.example.demo.dto.QuestionDTO;
+import com.example.demo.dto.QuestionQueryDTO;
 import com.example.demo.exception.CustomizeErrorCode;
 import com.example.demo.exception.CustomizeException;
 import com.example.demo.mapper.QuestionExtMapper;
@@ -31,26 +32,29 @@ public class QuestionService {
     @Resource
     private UserMapper userMapper;
 
-    public PaginationDTO list(Integer pageNum, Integer pageSize) {
+    public PaginationDTO list(String search, Integer pageNum, Integer pageSize) {
         Integer offset = (pageNum - 1) * pageSize;
-        QuestionExample questionExample = new QuestionExample();
-        questionExample.setOrderByClause("gmt_create desc");
-        List<Question> questionList = questionMapper.selectByExampleWithRowbounds(questionExample, new RowBounds(offset, pageSize));
-        User user;
+
+        QuestionQueryDTO questionQueryDTO = new QuestionQueryDTO();
+        questionQueryDTO.setPageSize(pageSize);
+        questionQueryDTO.setOffset(offset);
+        if (StringUtils.isNotBlank(search)) {
+            questionQueryDTO.setSearch(search.replace(" ", "|"));
+        }
+        int totalCount = questionExtMapper.countBySearch(questionQueryDTO);
+        List<Question> questionList = questionExtMapper.selectBySearch(questionQueryDTO);
         List<QuestionDTO> questionDTOList = new ArrayList<>();
         for (Question question : questionList) {
             QuestionDTO questionDTO = new QuestionDTO();
             BeanUtils.copyProperties(question, questionDTO);
-            user = userMapper.selectByPrimaryKey(question.getCreator());
+            User user = userMapper.selectByPrimaryKey(question.getCreator());
             questionDTO.setUser(user);
             questionDTOList.add(questionDTO);
         }
-        Integer totalPageNum = Math.toIntExact(questionMapper.countByExample(new QuestionExample()));
         // 组装分页对象
         PaginationDTO<QuestionDTO> paginationDTO = new PaginationDTO<>();
         paginationDTO.setDatas(questionDTOList);
-        paginationDTO.setPaginationDTO(totalPageNum, pageNum, pageSize);
-
+        paginationDTO.setPaginationDTO(totalCount, pageNum, pageSize);
 
         return paginationDTO;
     }
