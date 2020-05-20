@@ -1,10 +1,11 @@
 package com.example.demo.controller;
 
-import com.example.demo.service.UserService;
 import com.example.demo.dto.AccessTokenDTO;
 import com.example.demo.dto.GitHubUser;
 import com.example.demo.model.User;
 import com.example.demo.provider.GitHubProvider;
+import com.example.demo.service.UserService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
@@ -19,6 +20,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.util.UUID;
 
 @Controller
+@Slf4j
 public class AuthorizeController {
 
     @Value("${github.client.id}")
@@ -67,6 +69,7 @@ public class AuthorizeController {
             response.addCookie(cookie);
             return "redirect:index";
         }
+        log.error("callback get github error,{}", gitHubUser);
         return "redirect:index";
     }
 

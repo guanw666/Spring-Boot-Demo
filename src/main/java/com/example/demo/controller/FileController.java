@@ -3,6 +3,7 @@ package com.example.demo.controller;
 import com.example.demo.dto.FileDTO;
 import com.example.demo.exception.CustomizeErrorCode;
 import com.example.demo.exception.CustomizeException;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -16,6 +17,7 @@ import java.util.Objects;
 import java.util.UUID;
 
 @Controller
+@Slf4j
 public class FileController {
 
     @Value("${file.upload.path}")
@@ -35,6 +37,7 @@ public class FileController {
             }
             file.transferTo(destFile);
         } catch (IOException e) {
+            log.error("file [{}] upload fail,{}", file.getOriginalFilename(), e);
             e.printStackTrace();
             throw new CustomizeException(CustomizeErrorCode.FILE_UPLOAD_FAIL);
         }
