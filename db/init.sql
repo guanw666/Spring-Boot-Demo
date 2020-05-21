@@ -1,4 +1,4 @@
-create database `spring-boot-demo-db`;
+create database if not exists `spring-boot-demo-db`;
 use `spring-boot-demo-db`;
 
 drop table if exists USER;
