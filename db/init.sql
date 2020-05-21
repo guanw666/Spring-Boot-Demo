@@ -46,7 +46,7 @@ create table COMMENT
   gmt_modified  bigint(11)           null comment '修改时间'
 );
 
-drop table NOTIFICATION;
+drop table if exists NOTIFICATION;
 create table NOTIFICATION
 (
   id           bigint auto_increment
