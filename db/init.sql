@@ -1,7 +1,7 @@
 create database `spring-boot-demo-db`;
 use `spring-boot-demo-db`;
 
-drop table USER;
+drop table if exists USER;
 create table USER
 (
   id           bigint(11) auto_increment comment '主键'
@@ -15,7 +15,7 @@ create table USER
   avatar_url   varchar(255) null comment '头像url'
 );
 
-drop table QUESTION;
+drop table if exists QUESTION;
 create table QUESTION
 (
   id            bigint(11) auto_increment comment '主键'
@@ -31,7 +31,7 @@ create table QUESTION
   tag           varchar(255)         null comment '标签'
 );
 
-drop table COMMENT;
+drop table if exists COMMENT;
 create table COMMENT
 (
   id            bigint(11) auto_increment comment 'id'

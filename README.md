@@ -43,3 +43,10 @@
 - mvn -v
 - java -version
 - mvn clean compile package
+- systemctl start mariadb
+- mysql
+- use myql
+- update user set password = password("new password") where user = 'root';
+- flush privileges;
+- exit
+- mysql -u root -p
