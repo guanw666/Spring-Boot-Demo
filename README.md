@@ -27,3 +27,19 @@
 ### 参考页面
 
 [elasticsearch.cn](https://elasticsearch.cn/)
+
+### 部署流程
+- git
+- jdk
+- maven
+- mysql
+#### 步骤
+- yum update
+- yum install git
+- mkdir App
+- cd App
+- git clone https://github.com/guanw666/Spring-Boot-Demo.git
+- yum install maven
+- mvn -v
+- java -version
+- mvn clean compile package
