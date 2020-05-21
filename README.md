@@ -50,3 +50,4 @@
 - flush privileges;
 - exit
 - mysql -u root -p
+- source /*/Spring-Boot-Demo/db/init.sql
