@@ -31,7 +31,7 @@ public class GitHubProvider {
                 return resp.getString("access_token");
             }
         } catch (IOException e) {
-            log.error("Get github access_token error:{}", e);
+            log.error("Get github access_token error", e);
         }
         return null;
     }
@@ -46,10 +46,11 @@ public class GitHubProvider {
         try {
             Response response = client.newCall(request).execute();
             if (response.isSuccessful()) {
+                log.info("Get github user info repsonse success");
                 return JSONObject.parseObject(response.body().string(), GitHubUser.class);
             }
         } catch (IOException e) {
-            log.error("Get github user info error:{}", e);
+            log.error("Get github user info error", e);
         }
         return null;
     }
