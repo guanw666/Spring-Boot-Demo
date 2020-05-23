@@ -67,9 +67,9 @@ public class AuthorizeController {
             // 写cookie
             Cookie cookie = new Cookie("token", user.getToken());
             response.addCookie(cookie);
-            return "redirect:/";
+        } else {
+            log.error("Cant't get github user info");
         }
-        log.error("callback get github error,{}", gitHubUser);
         return "redirect:/";
     }
 

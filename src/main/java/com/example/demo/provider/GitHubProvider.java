@@ -3,11 +3,13 @@ package com.example.demo.provider;
 import com.alibaba.fastjson.JSONObject;
 import com.example.demo.dto.AccessTokenDTO;
 import com.example.demo.dto.GitHubUser;
+import lombok.extern.slf4j.Slf4j;
 import okhttp3.*;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 
+@Slf4j
 @Component
 public class GitHubProvider {
 
@@ -29,7 +31,7 @@ public class GitHubProvider {
                 return resp.getString("access_token");
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            log.error("Get github access_token error:{}", e);
         }
         return null;
     }
@@ -47,7 +49,7 @@ public class GitHubProvider {
                 return JSONObject.parseObject(response.body().string(), GitHubUser.class);
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            log.error("Get github user info error:{}", e);
         }
         return null;
     }
