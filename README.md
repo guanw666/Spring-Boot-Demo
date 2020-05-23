@@ -51,3 +51,8 @@
 - exit
 - mysql -u root -p
 - source /*/Spring-Boot-Demo/db/init.sql
+- cd /*/Spring-Boot-Demo/src/main/resource
+- cp application.properties application-production.properties
+- vi application-production.properties
+- mvn package
+- java -jar target/demo-0.0.1-SNAPSHOT.jar --spring.profiles.active=production
