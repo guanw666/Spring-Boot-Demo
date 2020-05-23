@@ -4,6 +4,7 @@ import com.example.demo.mapper.UserMapper;
 import com.example.demo.model.User;
 import com.example.demo.model.UserExample;
 import com.example.demo.service.NotificationService;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.HandlerInterceptor;
 
@@ -16,6 +17,12 @@ import java.util.List;
 @Service
 public class SessionInterceptor implements HandlerInterceptor {
 
+    @Value("${github.redirect.uri}")
+    private String redirectUri;
+
+    @Value("${github.client.id}")
+    private String clientId;
+
     @Resource
     private UserMapper userMapper;
 
@@ -24,6 +31,8 @@ public class SessionInterceptor implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
+        request.getSession().setAttribute("redirectUri", redirectUri);
+        request.getSession().setAttribute("clientId", clientId);
 //        request.getSession().removeAttribute("user");
         Cookie[] cookies = request.getCookies();
         if (cookies != null && cookies.length > 0) {

@@ -67,10 +67,10 @@ public class AuthorizeController {
             // 写cookie
             Cookie cookie = new Cookie("token", user.getToken());
             response.addCookie(cookie);
-            return "redirect:index";
+            return "redirect:/";
         }
         log.error("callback get github error,{}", gitHubUser);
-        return "redirect:index";
+        return "redirect:/";
     }
 
     @GetMapping("/logout")
@@ -80,6 +80,6 @@ public class AuthorizeController {
         Cookie cookie = new Cookie("token", null);
         cookie.setMaxAge(0);
         response.addCookie(cookie);
-        return "redirect:index";
+        return "redirect:/";
     }
 }
