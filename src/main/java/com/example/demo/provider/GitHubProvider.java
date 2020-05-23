@@ -47,7 +47,9 @@ public class GitHubProvider {
             Response response = client.newCall(request).execute();
             if (response.isSuccessful()) {
                 log.info("Get github user info repsonse success,{}", response.body().string());
-                return JSONObject.parseObject(response.body().string(), GitHubUser.class);
+                GitHubUser gitHubUser = JSONObject.parseObject(response.body().string(), GitHubUser.class);
+                log.info(gitHubUser.toString());
+                return gitHubUser;
             }
         } catch (IOException e) {
             log.error("Get github user info error", e);
