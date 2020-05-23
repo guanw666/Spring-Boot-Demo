@@ -1,63 +1,91 @@
 create database if not exists `spring-boot-demo-db`;
 use `spring-boot-demo-db`;
 
-drop table if exists USER;
-create table USER
-(
-  id           bigint(11) auto_increment comment '主键'
-    primary key,
-  account_id   varchar(50)  null comment '账号',
-  name         varchar(100) null comment '姓名',
-  token        varchar(36)  null comment 'token',
-  gmt_create   bigint(11)   null comment '创建时间',
-  gmt_modified bigint(11)   null comment '修改时间',
-  bio          varchar(255) null comment '个性签名',
-  avatar_url   varchar(255) null comment '头像url'
-);
+SET NAMES utf8mb4;
+SET FOREIGN_KEY_CHECKS = 0;
 
-drop table if exists QUESTION;
-create table QUESTION
-(
-  id            bigint(11) auto_increment comment '主键'
-    primary key,
-  title         varchar(50)          null comment '标题',
-  description   varchar(4000)        null comment '描述',
-  gmt_create    bigint(11)           null comment '创建时间',
-  gmt_modified  bigint(11)           null comment '修改时间',
-  creator       bigint(11) default 0 null comment '创建人',
-  comment_count bigint(11) default 0 null comment '评论数',
-  view_count    bigint(11) default 0 null comment '查看数',
-  like_count    bigint(11) default 0 null comment '点赞数',
-  tag           varchar(255)         null comment '标签'
-);
+-- ----------------------------
+-- Table structure for USER
+-- ----------------------------
+DROP TABLE IF EXISTS `USER`;
+CREATE TABLE `USER`  (
+                       `id` bigint(11) NOT NULL AUTO_INCREMENT COMMENT '主键',
+                       `account_id` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL COMMENT '账号',
+                       `name` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL COMMENT '姓名',
+                       `token` varchar(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL COMMENT 'token',
+                       `gmt_create` bigint(11) NULL DEFAULT NULL COMMENT '创建时间',
+                       `gmt_modified` bigint(11) NULL DEFAULT NULL COMMENT '修改时间',
+                       `bio` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL COMMENT '个性签名',
+                       `avatar_url` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL COMMENT '头像url',
+                       PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_bin ROW_FORMAT = Dynamic;
 
-drop table if exists COMMENT;
-create table COMMENT
-(
-  id            bigint(11) auto_increment comment 'id'
-    primary key,
-  parent_id     bigint(11)           null comment '父id',
-  type          int                  null comment '类型',
-  comment       varchar(255)         null comment '评论内容',
-  commentator   bigint(11)           null comment '评论者id',
-  like_count    bigint(11) default 0 null comment '点赞数',
-  comment_count bigint(11) default 0 null comment '评论数',
-  gmt_create    bigint(11)           null comment '创建时间',
-  gmt_modified  bigint(11)           null comment '修改时间'
-);
+SET FOREIGN_KEY_CHECKS = 1;
 
-drop table if exists NOTIFICATION;
-create table NOTIFICATION
-(
-  id           bigint auto_increment
-    primary key,
-  notifer      bigint        null,
-  notifer_name varchar(100)  null,
-  receiver     bigint        null,
-  outer_id     bigint        null,
-  outer_title  varchar(255)  null,
-  type         int           null,
-  gmt_create   bigint        null,
-  status       int default 0 null
-);
+SET NAMES utf8mb4;
+SET FOREIGN_KEY_CHECKS = 0;
+
+-- ----------------------------
+-- Table structure for QUESTION
+-- ----------------------------
+DROP TABLE IF EXISTS `QUESTION`;
+CREATE TABLE `QUESTION`  (
+                           `id` bigint(11) NOT NULL AUTO_INCREMENT COMMENT '主键',
+                           `title` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL COMMENT '标题',
+                           `description` varchar(4000) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL COMMENT '描述',
+                           `gmt_create` bigint(11) NULL DEFAULT NULL COMMENT '创建时间',
+                           `gmt_modified` bigint(11) NULL DEFAULT NULL COMMENT '修改时间',
+                           `creator` bigint(11) NULL DEFAULT 0 COMMENT '创建人',
+                           `comment_count` bigint(11) NULL DEFAULT 0 COMMENT '评论数',
+                           `view_count` bigint(11) NULL DEFAULT 0 COMMENT '查看数',
+                           `like_count` bigint(11) NULL DEFAULT 0 COMMENT '点赞数',
+                           `tag` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL COMMENT '标签',
+                           PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_bin ROW_FORMAT = Dynamic;
+
+SET FOREIGN_KEY_CHECKS = 1;
+
+SET NAMES utf8mb4;
+SET FOREIGN_KEY_CHECKS = 0;
+
+-- ----------------------------
+-- Table structure for COMMENT
+-- ----------------------------
+DROP TABLE IF EXISTS `COMMENT`;
+CREATE TABLE `COMMENT`  (
+                          `id` bigint(11) NOT NULL AUTO_INCREMENT COMMENT 'id',
+                          `parent_id` bigint(11) NULL DEFAULT NULL COMMENT '父id',
+                          `type` int(11) NULL DEFAULT NULL COMMENT '类型',
+                          `comment` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL COMMENT '评论内容',
+                          `commentator` bigint(11) NULL DEFAULT NULL COMMENT '评论者id',
+                          `like_count` bigint(11) NULL DEFAULT 0 COMMENT '点赞数',
+                          `comment_count` bigint(11) NULL DEFAULT 0 COMMENT '评论数',
+                          `gmt_create` bigint(11) NULL DEFAULT NULL COMMENT '创建时间',
+                          `gmt_modified` bigint(11) NULL DEFAULT NULL COMMENT '修改时间',
+                          PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_bin ROW_FORMAT = Dynamic;
+
+SET FOREIGN_KEY_CHECKS = 1;
+
+SET NAMES utf8mb4;
+SET FOREIGN_KEY_CHECKS = 0;
+
+-- ----------------------------
+-- Table structure for NOTIFICATION
+-- ----------------------------
+DROP TABLE IF EXISTS `NOTIFICATION`;
+CREATE TABLE `NOTIFICATION`  (
+                               `id` bigint(20) NOT NULL AUTO_INCREMENT,
+                               `notifer` bigint(20) NULL DEFAULT NULL,
+                               `notifer_name` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL,
+                               `receiver` bigint(20) NULL DEFAULT NULL,
+                               `outer_id` bigint(20) NULL DEFAULT NULL,
+                               `outer_title` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL,
+                               `type` int(11) NULL DEFAULT NULL,
+                               `gmt_create` bigint(20) NULL DEFAULT NULL,
+                               `status` int(11) NULL DEFAULT 0,
+                               PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_bin ROW_FORMAT = Dynamic;
+
+SET FOREIGN_KEY_CHECKS = 1;
 
