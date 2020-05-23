@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.example.demo.dto.ResultDTO;
 import com.example.demo.exception.CustomizeErrorCode;
 import com.example.demo.exception.CustomizeException;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -17,12 +18,14 @@ import java.io.PrintWriter;
 /**
  * 拦截业务异常
  */
+@Slf4j
 @ControllerAdvice
 public class CustomizeExceptionHandler {
     @ExceptionHandler(Exception.class)
     ModelAndView handleControllerException(Throwable e, Model model,
                                            HttpServletRequest request,
                                            HttpServletResponse response) {
+        log.error("Catch exception:", e);
         if ("application/json".equals(request.getContentType())) {
             ResultDTO resultDTO;
             if (e instanceof CustomizeException) {
