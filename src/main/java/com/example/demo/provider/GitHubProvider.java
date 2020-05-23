@@ -8,6 +8,7 @@ import okhttp3.*;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
+import java.util.concurrent.TimeUnit;
 
 @Slf4j
 @Component
@@ -37,16 +38,21 @@ public class GitHubProvider {
     }
 
     public GitHubUser getUser(String accessToken) {
-        OkHttpClient client = new OkHttpClient();
+        OkHttpClient client = new OkHttpClient.Builder()
+                .connectTimeout(50, TimeUnit.SECONDS)
+                .readTimeout(50, TimeUnit.SECONDS)
+                .build();
         Request request = new Request.Builder()
                 .url("https://api.github.com/user")
                 .header("Accept", "application/json")
                 .addHeader("Authorization", "token " + accessToken)
                 .build();
         try {
+            log.info("Start get userinfo by api.github.com/user...");
+            long start = System.currentTimeMillis();
             Response response = client.newCall(request).execute();
+            log.info("Wait api.github.com/user response task [{}] ms", System.currentTimeMillis() - start);
             if (response.isSuccessful()) {
-                log.info("Get github user info repsonse success,{}", response.body().string());
                 GitHubUser gitHubUser = JSONObject.parseObject(response.body().string(), GitHubUser.class);
                 log.info(gitHubUser.toString());
                 return gitHubUser;
