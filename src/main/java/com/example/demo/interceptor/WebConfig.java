@@ -36,6 +36,6 @@ public class WebConfig implements WebMvcConfigurer {
                 .addResourceLocations("classpath:/static/");
         // 读文件处理
         registry.addResourceHandler("/photos/**")
-                .addResourceLocations("file:" + fileUploadPath + "/");
+                .addResourceLocations("file:" + fileUploadPath);
     }
 }
